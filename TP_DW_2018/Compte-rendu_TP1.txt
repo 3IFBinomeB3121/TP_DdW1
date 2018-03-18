@@ -90,4 +90,6 @@ Etape 2  : Mise à jour de l'instance [XML, DTD]
 				   
 Etape 3 : Mise en forme du corpus des pays du monde [XSLT]
 
-	
+	Cf. la feuille de style xsl "pays_du_monde_tableau_3IF.xsl"
+
+Etape 4 : 

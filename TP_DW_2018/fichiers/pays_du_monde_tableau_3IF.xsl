@@ -20,7 +20,10 @@
 						<td>Coordonnées</td>
 						<td>Drapeau</td>
 					</tr>
-					<xsl:apply-templates select="countries/country"/>
+					
+					<xsl:apply-templates select="countries/country">
+						<xsl:sort select="name/common" order="ascending"/>
+					</xsl:apply-templates>
 				  </table>
 			</body>
 		</html>
@@ -32,13 +35,13 @@
 		</p><hr/>
 	</xsl:template>
 	
-	<xsl:template match="country">
 		
+							
+	<xsl:template match="country">
+			
 				<tr>
 						<td>
-							<xsl:variable name="compteur" select="1"/>
-							
-								
+							<xsl:value-of select="position()"/>
 						</td>
 						<td>
 							<xsl:value-of select="./name/common"/> (<xsl:value-of select="./name/official"/>)
@@ -66,9 +69,22 @@
 							Longitude : <xsl:value-of select="coordinates/@long"/>
 						</td>
 						<td>
-							<xsl:variable name="codecca2" select="codes/cca2">
-							<img src="concat('http://www.geonames.org/flags/x/',translate($codecca2, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'),'.gif')" alt="" height="40" width="60"/>
-							</xsl:variable>
+							<xsl:variable name="codecca2" select="codes/cca2"/>
+							<xsl:variable name="codecca2minuscule" select="translate($codecca2, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')"/>
+							<xsl:variable name="sourceDrapeau" select="concat('http://www.geonames.org/flags/x/',$codecca2minuscule,'.gif')"/>
+							<img>
+								<xsl:attribute name="src">
+									<xsl:value-of select="$sourceDrapeau"/>
+								</xsl:attribute>
+								<xsl:attribute name="alt">
+								</xsl:attribute>
+								<xsl:attribute name="height">
+									<xsl:value-of select='40'/>
+								</xsl:attribute>
+								<xsl:attribute name="width">
+									<xsl:value-of select='60'/>
+								</xsl:attribute>
+							</img>
 						</td>
 				</tr>
 	</xsl:template>
