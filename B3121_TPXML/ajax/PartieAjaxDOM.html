@@ -1,0 +1,77 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>TP 3IF Ajax</title>
+    <meta name="author" content="Elöd EGYED-ZSIGMOND">
+
+    <script type="text/javascript" src="partieJavascript.js"></script>
+
+</head>
+
+<body style="background-color:white" id="myBody"> <p>Fichier à modifier/compléter</p>
+    <p>
+        <input name="button" type="button" id="myButton1" style="color:black" onClick="setNom(document.getElementById('myText1').value)" value="1. AJAX simple" />
+        <input name="text" type="text" id="myText1" value="Toto" />
+        <br />
+        <input name="button2" type="button" id="myButton2" onClick="Bouton2_ajaxBibliographie('ajax.bib.xml','ajax.bib.xsl','ul');" value="2. AJAX avec ajax.bib.xml/ajax.bib.xsl" />
+        <br />
+        <input name="button2" type="button" id="myButton3" onClick="Bouton3_ajaxEmployees('Employees.xml');" value="3. AJAX avec Employees.xml" />
+        <br />
+		<input name="button" type="button" id="ButtonQu1" style="color:black" onClick="setBg('blue'); setTextButtonColor('white')" value="Question 1 : background en bleu et texte du bouton en blanc" />
+		<br />
+		<input name="button" type="button" id="ButtonQu2" style="color:black" onClick="setBg('white')" value="Question 2 : Remettre arrière-plan en blanc" />
+		<br />
+		<input name="button" type="button" id="ButtonQu3" style="color:black" onClick="afficherInfoPays('countriesTP_ajax.xml','cherchePays.xsl','span')" value="Question 3 : Affiche le nom officiel du pays saisi et sa capitale" />
+        <input name="text" type="text" id="textQu3" value="France" />
+		<br />
+		<input name="button" type="button" id="ButtonQu4" style="color:black" onClick="setImg('exemple.svg')" value="Question 4 : Afficher l'image SVG avec les formes" />
+		<br />
+		<input name="button" type="button" id="ButtonQu5" style="color:black" onClick="imgClickable()" value="Question 5 : Rendre les elements de l'image avec les formes 'clickables' et affiche son attr. 'Title'" />
+		<br />
+		<input name="button" type="button" id="ButtonQu6" style="color:black" onClick="setImg('worldHigh.svg')" value="Question 6 : Charger la carte du monde en SVG" />
+		<br />
+		<input name="button" type="button" id="ButtonQu7" style="color:black" onClick="imgClickable()" value="Question 7 : Rendre les pays 'clickables'" />
+		<br />
+		<input name="button" type="button" id="ButtonQu8" style="color:black" onClick="imgMouse()" value="Question 8 : Capter les events 'mouseover' et 'mouseleave' sur les pays de la carte, changer leur couleur et afficher leur infos" />
+		<br />
+		<input name="button" type="button" id="ButtonQu9" style="color:black" autocomplete="off" ="afficherInfoPays('countriesTP_ajax.xml','cherchePays.xsl','span')" value="Question 9 : Reprise question 3 avec système d'auto-complétion" />
+        <input name="text" type="text" id="textQu9" value="France" />
+		<br />
+		
+		
+    </p>
+    <div>
+        <p>Les noms sont : <br/>
+            <span id="id_nom_a_remplacer" style="color: green; font-weight: bold;">LES NOMS (Cet &eacute;l&eacute;ment va &ecirc;tre remplac&eacute; par les noms) </span>.</p>
+    </div>
+    <div id="informationPays">
+        <p style="color: green; font-weight: bold;">Cet &eacute;l&eacute;ment va &ecirc;tre remplac&eacute; par une bibliographie en XML mise en forme par une feuille de style XSLT...</p>
+    </div>
+	<div>
+        <p style="font-size:22px">Au clique sur une des deux images, le nom du pays ou la forme apparait ICI -->
+            <span id="forme" style="color: blue; font-weight: bold;">Forme cliquée ou Pays cliqué</span>
+		</p>
+    </div>
+	<br/>
+	<span id="payscapitale">
+		<table border="3" width="600px" align="center">
+			<tr >
+				<td style="text-align:center">Pays</td>
+				<td style="text-align:center">Capitale</td>
+				<td style="text-align:center"><img id="emplacementDrapeau" src="" alt=""/>Drapeau</td>
+			</tr>
+		</table>
+	</span>
+	<br/>
+	<div id="imageSvg">
+        <p>Image SVG : appuyer sur le bouton 4 ou 6<br/></p>
+    </div>
+	
+	
+
+
+</body>
+
+</html>

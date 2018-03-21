@@ -1,0 +1,157 @@
+Créer un fichier zip : B3121_TPXML.zip
+	DTD modifié
+	feuille de style XSL finale
+	Résultat de la transformation en .html
+	doc réponse à la partie DOM/AJAX
+	doc texte ou html "chapeau" contenant les réponses et leurs énoncé.
+	Pour colorier le code : http://www.tohtml.com/
+
+	
+Première partie : XML, DTD, XPath, XSLT
+Etape 1 : Exploration de l'instance [XPath]
+
+1)Donnez les expressions XPath pour sélectionner les éléments suivants:
+	1)toutes les capitales 
+
+	Requête : //capital
+	Réponse : capital	Oranjestad
+	
+	2)les noms commun des pays
+	
+	Requête : //name/common
+	Réponse : common	Aruba
+	
+	3)les éléments ayant exactement un attribut
+	
+	Requête : //*[count(self::*/@*)=1]
+	Reponse : native_name	
+	
+	4)les noms officiels des pays en français, pour ceux qui en ont
+	
+	Requête : //native_name[@lang="fra"]/official
+	Réponse : official	Territoire des Terres australes et antarctiques françaises
+	
+	5)les deuxièmes noms natives officiels des pays
+	
+	Requête : //native_name/following-sibling::native_name[position()=1]/official
+	Réponse : official	Aruba
+	
+	6)la somme des superficies (area) des pays d'Europe 
+	
+	Requête : sum(//country[self::*/infosRegion/region="Europe"]/area)
+	Réponse : 2.302289746E7
+	
+	7)les pays qui n'ont pas de nom natif
+	
+	Requête : //country/name[count(self::*/native_name)=0]/common
+	Réponse : common	Antarctica
+	
+	8) les pays dont le nom commun n'est pas contenu dans leur nom officiel 
+	
+	Requête : //country/name/official[contains(self::*,parent::*/common)=0]
+	Réponse : official	Argentine Republic
+	
+	9) les noms officiels des pays ayant plus de 8 voisins (borders)
+	
+	Requête : //country[count(borders)>=8]/name/official
+	Réponse : official	Republic of Austria
+	
+	10) La position de la France dans le document XML 
+	
+	Requête : count(//country[self::*/name/common="France"]/preceding-sibling::country)+1
+	Réponse : Result = 75.0
+	
+	11) les noms officiels des pays fédéraux 
+	
+	Requête : //country/name/official[contains(self::*,"Federa")]
+	Réponse : official	Federative Republic of Brazil
+	
+	12) les langues des noms natifs des pays sans doublons 
+	
+	Requête : //native_name/@lang[not(preceding::native_name/@lang=.)]
+	Réponse : lang	nld
+	
+Etape 2  : Mise à jour de l'instance [XML, DTD] 
+
+	1) Grâce à Editix, nous avons identifié l'erreur au niveau du pays "Kosovo" au niveau de la balise <country>.
+	En nous aidant du message d'erreur, nous avons remarqué que la balise <tld> était manquante. Or, celle-ci est déclaré avec un + 
+	dans la DTD. Nous avons donc apporté la modification suivante :
+	
+	<!ELEMENT country (name,tld*,codes,currency*,callingCode*,
+                   capital,altSpellings+, infosRegion*,languages+,
+                   coordinates*,demonym,landlocked,borders*,area)>
+	
+	2) <infosRegion> est le seul enfant d'élément country qui est indiqué avec une occurence minimale 0 alors qu'il est
+	présent partout. Voici la modification au niveau de l'élément country :
+	
+	<!ELEMENT country (name,tld*,codes,currency*,callingCode*,
+                   capital,altSpellings+, infosRegion+,languages+,
+                   coordinates*,demonym,landlocked,borders*,area)>
+				   
+Etape 3 : Mise en forme du corpus des pays du monde [XSLT]
+	
+	3.1) En-tête du fichier 
+	
+		Nous avons tout d'abord rajouté dans l'en-tête de notre document XML un appel à la feuille de style créée :
+			<?xml-stylesheet type="text/xsl" href="pays_du_monde_tableau_3IF.xsl"?> 
+	
+	3.2) Contexte HTML du document
+	
+		Dans la feuille de style, pour obtenir un résultat s'affichant en HTML, nous avons rajouté :
+			<xsl:output method="html" />  
+		
+	3.3)Affichage des méta données 
+		
+		Nous avons appliqué le modéle donné dans le sujet du TP qui s'applique aux méta-données.
+	
+	3.4) Affichage des informations de base sur les pays 
+		
+		Cf. la feuille de style xsl "pays_du_monde_tableau_3IF.xsl"
+			Dans cette partie, nous avons crées un template grâce à la balise <xsl:apply-template> et <xsl:template>. Nous l'appliquons à tous les pays
+		et grâce à un tableau, nous affichons les différentes informations concernant chaque pays. De plus, nous le trions par ordre alphabétique
+		sur le nom commun des pays.
+	
+	3.6) Affichage des statistiques sur les pays 
+		
+		Cf. la feuille de style xsl "pays_du_monde_tableau_3IF.xsl"
+			Ici, nous avons tous d'abord chercher les régions (continents) afin de les afficher et cela sans doublons. Nous les avons stockés dans une 
+		variable et nous parcourons chacune des régions pour trouver les sous-régions qu'elles contiennent. Nous les stockons dans une variable et
+		de manière unique. Enfin, nous réalisons un dernier parcourt de celles-ci pour connaître le nombre de pays que chacune d'elle contient.
+			Pour le pays ayant le nom le plus long, nous appliquons simplement un template avec un tri en fonction de longueur du nom commun du pays.
+	
+Deuxième partie : DOM et ajax 
+
+	Nous avons réalisé les 8 premiers boutons. Nous avons essayé de faire la question 9 mais sans succès par manque de temps.
+	
+	Pour la partie HTML, nous avons ajouté quelques éléments pour la mise en page grâce à du CSS inline. Tous ce qui a été modifié/ajouté
+	sur le document 'PartieAjaxDOM.html' est explicitement indiqués par le numéro de la question (notament pour les boutons). Nous avons laissés
+	les trois premiers boutons ainsi que les fonctions données dans les documents de départ.
+	
+	Fonctions créées dans la PartieAjaxDOM.html et fichiers ajoutés pour l'implémentation des différents boutons :
+	
+		Bouton 1 :  function setBg(couleur) 
+		
+		Bouton 2 :  function setTextButtonColor(couleur)
+		
+		Bouton 3 :  function afficherInfoPays(xmlDocumentUrl, xslDocumentUrl, newElementName)
+					Nous avons créé un nouveau document xsl : "cherchePays.xsl" pour générer les informations demandées.
+					Ce document xsl est lié au document 'countriesTP_ajax_infosPays.xml' qui est une simple copie de 'countriesTP.xml'.
+					
+		Bouton 4 :  function setImg(sourceImage)
+		
+		Bouton 5 :  function imgClickable()
+					function afficherTitle() 
+					function setTitleForme(laForme)
+					
+		Bouton 6 :  Nous avons réutilisé la fonction : 'function setImg(sourceImage)' du bouton 4 en changeant simplement 
+					la valeur du paramètre lors du clic sur ce bouton. Ici, la valeur du paramètre est 'worldHigh.svg'.
+					
+		Bouton 7 :  Nous avons réutilisé la fonction : 'function imgClickable()', 'function afficherTitle()' et 'function setTitleForme(laForme)'. 
+					A la place d'afficher le nom de la forme cliqué, le paramètre 'laForme' contiendra le nom du Pays cliqué qu'on devra afficher.
+					
+		Bouton 8 : 	function imgMouse()
+					function remettrePays()
+					function modifierPays()
+					Nous avons créé un nouveau document xsl : "infos_pays.xsl" pour générer un tableau dans lequel insérer les informations demandées.
+					Ce document xsl est lié au document 'countriesTP_ajax_infosPays.xml' qui est une simple copie de 'countriesTP.xml'.
+					 
